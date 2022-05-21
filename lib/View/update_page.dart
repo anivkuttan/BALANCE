@@ -107,18 +107,18 @@ class _UpdatePageState extends State<UpdatePage> {
                   onPressed: () {
                     var validate = formKey.currentState!.validate();
                     if (validate) {
-                      int balance = int.parse(personController.balanceController.text);
-                      int advanceAmount = int.parse(
-                        personController.initialAmountController.text,
-                      );
-                      Person newPerson = Person(
-                        name: personController.nameController.text,
-                        balance: balance,
-                        initialAmount: advanceAmount,
-                        discreption: personController.discreptionController.text,
-                      );
-                      personController.personList.add(newPerson);
-
+                      // int balance = int.parse(personController.balanceController.text);
+                      // int advanceAmount = int.parse(
+                      //   personController.initialAmountController.text,
+                      // );
+                      // Person newPerson = Person(
+                      //   name: personController.nameController.text,
+                      //   balance: balance,
+                      //   initialAmount: advanceAmount,
+                      //   discreption: personController.discreptionController.text,
+                      // );
+                      // personController.personList.add(newPerson);/
+                      clearControllers();
                       Navigator.pop(context);
                     }
                   },
@@ -129,5 +129,12 @@ class _UpdatePageState extends State<UpdatePage> {
         ),
       ),
     );
+  }
+
+  void clearControllers() {
+    personController.nameController.clear();
+    personController.balanceController.clear();
+    personController.initialAmountController.clear();
+    personController.discreptionController.clear();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:balance/Controller/get_controller.dart';
 import 'package:balance/Model/person.dart';
 import 'package:balance/View/add_page.dart';
+import 'package:balance/View/update_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -79,13 +80,12 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             height: 50,
                             width: 80,
-
                             decoration: BoxDecoration(
-                              color: person.balance.isNegative?Colors.red:Colors.green,
+                              color: person.balance.isNegative ? Colors.red : Colors.green,
                               borderRadius: BorderRadius.circular(13),
                             ),
                             alignment: Alignment.center,
-                            child: Text(person.balance.toString(),style:const TextStyle(fontSize: 30)),
+                            child: Text(person.balance.toString(), style: const TextStyle(fontSize: 30)),
                           ),
                         ],
                       ),
@@ -98,7 +98,34 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.green,
                           alignment: Alignment.center,
                           height: 260,
-                          child: Text(person.discreption),
+                          child: Column(
+                            children: [
+                              Text(person.discreption),
+                              const Spacer(),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      personController.personList.removeAt(index);
+                                    },
+                                    icon: const Icon(Icons.delete, color: Colors.red),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Route route = MaterialPageRoute(builder: (context) {
+                                        return UpdatePage(
+                                          index: index,
+                                        );
+                                      });
+                                      Navigator.of(context).push(route);
+                                    },
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
