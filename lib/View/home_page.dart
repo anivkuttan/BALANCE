@@ -1,7 +1,6 @@
 import 'package:balance/Controller/get_controller.dart';
-import 'package:balance/Model/person.dart';
+import 'package:balance/Model/person_model.dart';
 import 'package:balance/View/add_page.dart';
-import 'package:balance/View/update_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,13 +45,13 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       const Text("Total Initial Amount "),
                       FloatingActionButton(
+                        child: const Icon(Icons.add, color: Colors.black),
                         onPressed: () {
                           Route route = MaterialPageRoute(builder: (context) {
                             return const AddPage();
                           });
                           Navigator.of(context).push(route);
                         },
-                        child: const Icon(Icons.add, color: Colors.black),
                       )
                     ],
                   )
@@ -60,22 +59,22 @@ class _HomePageState extends State<HomePage> {
               )),
           const SizedBox(height: 20),
           Expanded(
-            child: Obx(() {
+            child: GetBuilder<PersonController>(builder: ((controller) {
               return ListView.separated(
-                itemCount: personController.personList.length,
+                itemCount: controller.personBox.length,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 4.0,
                 ),
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  Person person = personController.personList[index];
+                  Person? person = controller.personBox.getAt(index);
                   return Card(
                     child: ExpansionTile(
                       textColor: Colors.black,
                       tilePadding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                       title: Row(
                         children: [
-                          Text(person.name),
+                          Text(person!.name),
                           const Spacer(),
                           Container(
                             height: 50,
@@ -95,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       children: [
                         Container(
-                          color: Colors.green,
+                          color: const Color.fromARGB(255, 200, 205, 200),
                           alignment: Alignment.center,
                           height: 260,
                           child: Column(
@@ -105,22 +104,27 @@ class _HomePageState extends State<HomePage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      personController.personList.removeAt(index);
-                                    },
+                                  TextButton.icon(
                                     icon: const Icon(Icons.delete, color: Colors.red),
+                                    label: const Text(
+                                      'Delete',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    onPressed: () {
+                                      controller.deletePersonBox(index: index);
+                                    },
                                   ),
-                                  IconButton(
+                                  TextButton.icon(
                                     onPressed: () {
                                       Route route = MaterialPageRoute(builder: (context) {
-                                        return UpdatePage(
-                                          index: index,
+                                        return AddPage(
+                                          editedIndex: index,
                                         );
                                       });
                                       Navigator.of(context).push(route);
                                     },
                                     icon: const Icon(Icons.edit),
+                                    label: const Text('Edit'),
                                   ),
                                 ],
                               )
@@ -135,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                   return const Divider();
                 },
               );
-            }),
+            })),
           )
         ],
       ),

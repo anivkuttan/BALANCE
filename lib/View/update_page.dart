@@ -1,5 +1,5 @@
 import 'package:balance/Controller/get_controller.dart';
-import 'package:balance/Model/person.dart';
+import 'package:balance/Model/person_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
