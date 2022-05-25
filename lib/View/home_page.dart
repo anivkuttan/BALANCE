@@ -58,7 +58,12 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Text("Total Initial Amount "),
-                      const Text('3000'),
+                      Obx(() {
+                        return Text(
+                          personController.totalAdvanceAmount.toString(),
+                          style: const TextStyle(fontSize: 30),
+                        );
+                      }),
                       FloatingActionButton(
                         child: const Icon(Icons.add, color: Colors.black),
                         onPressed: () {

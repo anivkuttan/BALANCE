@@ -29,7 +29,8 @@ class _AddPageState extends State<AddEditPage> {
       clearControllers();
     } else {
       personController.nameController.text = widget.editedPerson!.name;
-      personController.balanceController.text = widget.editedPerson!.balance.toString();
+      personController.balanceController.text = 0.toString();
+      personController.balanceText.value = widget.editedPerson!.balance;
       personController.initialAmountController.text = widget.editedPerson!.initialAmount.toString();
       personController.discreptionController.text = widget.editedPerson!.discreption;
     }
@@ -65,20 +66,70 @@ class _AddPageState extends State<AddEditPage> {
                 },
               ),
               const SizedBox(height: 20),
-              TextFormField(
-                controller: personController.balanceController,
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please Enter Amount';
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: decoration.copyWith(
-                  label: const Text('Amount'),
-                ),
-              ),
+              widget.editedIndex == null
+                  ? TextFormField(
+                      controller: personController.balanceController,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Amount';
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: decoration.copyWith(
+                        label: const Text('Amount'),
+                      ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: 120,
+                          child: TextFormField(
+                            controller: personController.balanceController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Enter Amount';
+                              } else {
+                                return null;
+                              }
+                            },
+                            decoration: decoration.copyWith(
+                              label: const Text('Amount'),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Obx(() {
+                          return Text(
+                            personController.balanceText.value.toString(),
+                            style: const TextStyle(fontSize: 30),
+                          );
+                        }),
+                        const SizedBox(width: 20),
+                        ElevatedButton(
+                          child: const Text(
+                            "-",
+                            style: TextStyle(fontSize: 35),
+                          ),
+                          onPressed: () {
+                            personController.countterButtonClicked(Counter.decrement);
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          child: const Text(
+                            "+",
+                            style: TextStyle(fontSize: 35),
+                          ),
+                          onPressed: () {
+                            personController.countterButtonClicked(Counter.increment);
+                          },
+                        ),
+                      ],
+                    ),
               const SizedBox(height: 20),
               TextFormField(
                 controller: personController.initialAmountController,
@@ -105,9 +156,10 @@ class _AddPageState extends State<AddEditPage> {
               ),
               const SizedBox(height: 20),
               SizedBox(
+                height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
-                  child: const Text("Add"),
+                  child: widget.editedIndex == null ? const Text("Add") : const Text('Save'),
                   onPressed: () {
                     var validate = formKey.currentState!.validate();
                     if (validate) {
