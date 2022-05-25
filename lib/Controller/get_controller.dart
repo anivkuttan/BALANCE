@@ -10,6 +10,17 @@ class PersonController extends GetxController {
   late final TextEditingController balanceController;
   late final TextEditingController initialAmountController;
   late final TextEditingController discreptionController;
+  RxInt totalBalanceAmount = 0.obs;
+  RxInt totalAdvanceAmount = 0.obs;
+
+  getBalanceAmount() {
+    var totalPersons = personBox.values.toList();
+    // print("before adding amount ${totalPersons}");
+    for (var person in totalPersons) {
+      totalBalanceAmount += person.balance;
+      // print("after adding amount${totalBalanceAmount}");
+    }
+  }
 
   Box<Person> personBox = Hive.box(DataBaseHelper.boxName);
   RxList<Person> personList = <Person>[
@@ -25,8 +36,8 @@ class PersonController extends GetxController {
 
   updatePersonBox({required int index, required Person person}) async {
     await personBox.putAt(index, person);
-    // update method is get package
-    // it uodate getBuilder to build...
+    // update method is from get package
+    // it update getBuilder to build...
     update();
   }
 

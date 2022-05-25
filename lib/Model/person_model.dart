@@ -18,4 +18,9 @@ class Person extends HiveObject {
     this.initialAmount = 0,
     this.discreption = '',
   });
+
+  @override
+  String toString() {
+    return "Person(name:$name, balance: $balance, initialAmount :$initialAmount, discreption: $discreption,";
+  }
 }

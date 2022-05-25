@@ -3,17 +3,17 @@ import 'package:balance/Model/person_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AddPage extends StatefulWidget {
+class AddEditPage extends StatefulWidget {
   final int? editedIndex;
   final Person? editedPerson;
 
-  const AddPage({Key? key, this.editedIndex, this.editedPerson}) : super(key: key);
+  const AddEditPage({Key? key, this.editedIndex, this.editedPerson}) : super(key: key);
 
   @override
-  State<AddPage> createState() => _AddPageState();
+  State<AddEditPage> createState() => _AddPageState();
 }
 
-class _AddPageState extends State<AddPage> {
+class _AddPageState extends State<AddEditPage> {
   final GlobalKey<FormState> formKey = GlobalKey();
   final PersonController personController = Get.find();
   InputDecoration decoration = const InputDecoration(
@@ -25,12 +25,13 @@ class _AddPageState extends State<AddPage> {
   );
   @override
   void initState() {
-    if (widget.editedIndex != null) {
-      Person person = widget.editedPerson ?? Person(name: 'Name', balance: 0, initialAmount: 0);
-      personController.nameController.text = person.name;
-      personController.balanceController.text = person.balance.toString();
-      personController.initialAmountController.text = person.initialAmount.toString();
-      personController.discreptionController.text = person.discreption;
+    if (widget.editedPerson == null) {
+      clearControllers();
+    } else {
+      personController.nameController.text = widget.editedPerson!.name;
+      personController.balanceController.text = widget.editedPerson!.balance.toString();
+      personController.initialAmountController.text = widget.editedPerson!.initialAmount.toString();
+      personController.discreptionController.text = widget.editedPerson!.discreption;
     }
 
     super.initState();
@@ -45,7 +46,7 @@ class _AddPageState extends State<AddPage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: Form(
-          autovalidateMode: AutovalidateMode.always,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           key: formKey,
           child: Column(
             children: [
@@ -125,6 +126,7 @@ class _AddPageState extends State<AddPage> {
                       } else {
                         personController.updatePersonBox(index: widget.editedIndex!, person: newPerson);
                       }
+                      personController.getBalanceAmount();
                       clearControllers();
                       Navigator.pop(context);
                     }
@@ -144,7 +146,4 @@ class _AddPageState extends State<AddPage> {
     personController.initialAmountController.clear();
     personController.discreptionController.clear();
   }
-
-  addButtonPressed() {}
-  editButtonPressed() {}
 }

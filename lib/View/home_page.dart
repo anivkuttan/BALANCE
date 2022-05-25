@@ -1,6 +1,6 @@
 import 'package:balance/Controller/get_controller.dart';
 import 'package:balance/Model/person_model.dart';
-import 'package:balance/View/add_page.dart';
+import 'package:balance/View/add_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +13,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   PersonController personController = Get.put(PersonController());
+  @override
+  void initState() {
+    personController.getBalanceAmount();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,20 +41,29 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Text('Total Balance Amount '),
-                      Text('45'),
+                    children:  [
+                   const   Text(
+                        'Total Balance Amount ',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Obx(() {
+                        return Text(
+                          personController.totalBalanceAmount.toString(),
+                          style: const TextStyle(fontSize: 30),
+                        );
+                      })
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Text("Total Initial Amount "),
+                      const Text('3000'),
                       FloatingActionButton(
                         child: const Icon(Icons.add, color: Colors.black),
                         onPressed: () {
                           Route route = MaterialPageRoute(builder: (context) {
-                            return const AddPage();
+                            return const AddEditPage();
                           });
                           Navigator.of(context).push(route);
                         },
@@ -117,8 +132,9 @@ class _HomePageState extends State<HomePage> {
                                   TextButton.icon(
                                     onPressed: () {
                                       Route route = MaterialPageRoute(builder: (context) {
-                                        return AddPage(
+                                        return AddEditPage(
                                           editedIndex: index,
+                                          editedPerson: person,
                                         );
                                       });
                                       Navigator.of(context).push(route);
