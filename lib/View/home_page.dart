@@ -4,6 +4,8 @@ import 'package:balance/View/add_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+const String rupeeSymbol = '₹';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -27,56 +29,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Container(
-              margin: const EdgeInsets.all(13),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(23),
-              ),
-              height: 200,
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children:  [
-                   const   Text(
-                        'Total Balance Amount ',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Obx(() {
-                        return Text(
-                          personController.totalBalanceAmount.toString(),
-                          style: const TextStyle(fontSize: 30),
-                        );
-                      })
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const Text("Total Initial Amount "),
-                      Obx(() {
-                        return Text(
-                          personController.totalAdvanceAmount.toString(),
-                          style: const TextStyle(fontSize: 30),
-                        );
-                      }),
-                      FloatingActionButton(
-                        child: const Icon(Icons.add, color: Colors.black),
-                        onPressed: () {
-                          Route route = MaterialPageRoute(builder: (context) {
-                            return const AddEditPage();
-                          });
-                          Navigator.of(context).push(route);
-                        },
-                      )
-                    ],
-                  )
-                ],
-              )),
+          BuildContainer(personController: personController),
           const SizedBox(height: 20),
           Expanded(
             child: GetBuilder<PersonController>(builder: ((controller) {
@@ -167,3 +120,164 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+class BuildContainer extends StatelessWidget {
+  const BuildContainer({
+    Key? key,
+    required this.personController,
+  }) : super(key: key);
+
+  final PersonController personController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(13),
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(23),
+      ),
+      height: 200,
+      width: double.infinity,
+      alignment: Alignment.center,
+      child: Row(children: [
+        Expanded(
+          flex: 8,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: [
+                Color.fromARGB(255, 1, 32, 86),
+                Color.fromARGB(255, 4, 120, 215),
+              ]),
+              color: Colors.blueAccent[400],
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(23),
+                bottomLeft: Radius.circular(23),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        'Total Balance :',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      Obx(() {
+                        return Text(
+                          personController.totalBalanceAmount.toString(),
+                          style: const TextStyle(fontSize: 20, color: Colors.white),
+                        );
+                      }),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Total Amount :",
+                        style: TextStyle(fontSize: 24, color: Colors.white),
+                      ),
+                      Obx(() {
+                        return Text(
+                          personController.totalAdvanceAmount.toString(),
+                          style: const TextStyle(fontSize: 23, color: Colors.white),
+                        );
+                      }),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: InkWell(
+            onTap: () {
+              Route route = MaterialPageRoute(builder: (context) {
+                return const AddEditPage();
+              });
+              Navigator.of(context).push(route);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.blue[900],
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(23),
+                  bottomRight: Radius.circular(23),
+                ),
+              ),
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  Icon(Icons.add, color: Colors.white),
+                  RotatedBox(
+                    quarterTurns: 3,
+                    child: Text(
+                      'Add New',
+                      style: TextStyle(color: Colors.white, fontSize: 23),
+                    ),
+                  ),
+                ],
+              )),
+            ),
+          ),
+        ),
+      ]),
+    );
+  }
+}
+
+/*
+Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text(
+                  'Total Balance Amount ',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Obx(() {
+                  return Text(
+                    personController.totalBalanceAmount.toString(),
+                    style: const TextStyle(fontSize: 30),
+                  );
+                })
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text("Total Initial Amount "),
+                Obx(() {
+                  return Text(
+                    personController.totalAdvanceAmount.toString(),
+                    style: const TextStyle(fontSize: 30),
+                  );
+                }),
+                FloatingActionButton(
+                  child: const Icon(Icons.add, color: Colors.black),
+                  onPressed: () {
+                    Route route = MaterialPageRoute(builder: (context) {
+                      return const AddEditPage();
+                    });
+                    Navigator.of(context).push(route);
+                  },
+                )
+              ],
+            )
+          ],
+        )
+
+*/

@@ -29,7 +29,7 @@ class _AddPageState extends State<AddEditPage> {
       clearControllers();
     } else {
       personController.nameController.text = widget.editedPerson!.name;
-      personController.balanceController.text = 0.toString();
+      // personController.balanceController.text 
       personController.balanceText.value = widget.editedPerson!.balance;
       personController.initialAmountController.text = widget.editedPerson!.initialAmount.toString();
       personController.discreptionController.text = widget.editedPerson!.discreption;

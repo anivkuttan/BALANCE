@@ -2,7 +2,7 @@ import 'package:balance/Controller/data_base_helper.dart';
 import 'package:balance/Model/person_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'View/home_page.dart';
+import 'package:balance/View/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
