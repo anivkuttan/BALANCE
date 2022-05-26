@@ -160,79 +160,132 @@ class BuildContainer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'Total Balance :',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                      const SizedBox(
-                        width: 30,
-                      ),
-                      Obx(() {
-                        return Text(
-                          personController.totalBalanceAmount.toString(),
-                          style: const TextStyle(fontSize: 20, color: Colors.white),
-                        );
-                      }),
-                    ],
-                  ),
+                  BuildBalanceTExtWidegt(personController: personController),
                   const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Total Amount :",
-                        style: TextStyle(fontSize: 24, color: Colors.white),
+                  BuildAdvanceAmountWidget(personController: personController),
+                  const SizedBox(height: 40),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(23),
+                    child: SizedBox(
+                      height: 6,
+                      child: LinearProgressIndicator(
+                        value:personController.totalBalanceAmount.value/0.1,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color.fromARGB(255, 26, 91, 241),
+                        ),
+                        backgroundColor: const Color.fromARGB(255, 247, 218, 174),
                       ),
-                      Obx(() {
-                        return Text(
-                          personController.totalAdvanceAmount.toString(),
-                          style: const TextStyle(fontSize: 23, color: Colors.white),
-                        );
-                      }),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: InkWell(
-            onTap: () {
-              Route route = MaterialPageRoute(builder: (context) {
-                return const AddEditPage();
-              });
-              Navigator.of(context).push(route);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blue[900],
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(23),
-                  bottomRight: Radius.circular(23),
-                ),
-              ),
-              child: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  Icon(Icons.add, color: Colors.white),
-                  RotatedBox(
-                    quarterTurns: 3,
-                    child: Text(
-                      'Add New',
-                      style: TextStyle(color: Colors.white, fontSize: 23),
                     ),
                   ),
                 ],
-              )),
+              ),
             ),
           ),
         ),
+        const BuildAddNewPart(),
       ]),
+    );
+  }
+}
+
+class BuildAddNewPart extends StatelessWidget {
+  const BuildAddNewPart({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: InkWell(
+        onTap: () {
+          Route route = MaterialPageRoute(builder: (context) {
+            return const AddEditPage();
+          });
+          Navigator.of(context).push(route);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.blue[900],
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(23),
+              bottomRight: Radius.circular(23),
+            ),
+          ),
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: const [
+              Icon(Icons.add, color: Colors.white),
+              RotatedBox(
+                quarterTurns: 3,
+                child: Text(
+                  'Add New',
+                  style: TextStyle(color: Colors.white, fontSize: 23),
+                ),
+              ),
+            ],
+          )),
+        ),
+      ),
+    );
+  }
+}
+
+class BuildAdvanceAmountWidget extends StatelessWidget {
+  const BuildAdvanceAmountWidget({
+    Key? key,
+    required this.personController,
+  }) : super(key: key);
+
+  final PersonController personController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        const Text(
+          "Total Amount :",
+          style: TextStyle(fontSize: 24, color: Colors.white),
+        ),
+        Obx(() {
+          return Text(
+            personController.totalAdvanceAmount.toString(),
+            style: const TextStyle(fontSize: 23, color: Colors.white),
+          );
+        }),
+      ],
+    );
+  }
+}
+
+class BuildBalanceTExtWidegt extends StatelessWidget {
+  const BuildBalanceTExtWidegt({
+    Key? key,
+    required this.personController,
+  }) : super(key: key);
+
+  final PersonController personController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Text(
+          'Total Balance :',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        const SizedBox(
+          width: 30,
+        ),
+        Obx(() {
+          return Text(
+            personController.totalBalanceAmount.toString(),
+            style: const TextStyle(fontSize: 20, color: Colors.white),
+          );
+        }),
+      ],
     );
   }
 }

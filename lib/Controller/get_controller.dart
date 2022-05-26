@@ -15,6 +15,7 @@ class PersonController extends GetxController {
   RxInt totalBalanceAmount = 0.obs;
   RxInt totalAdvanceAmount = 0.obs;
   RxInt balanceText = 0.obs;
+  
 
   getBalanceAmount() {
     List<Person> totalPersons = personBox.values.toList();
