@@ -47,6 +47,7 @@ class _AddPageState extends State<AddEditPage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: Form(
+         // do implement on will pop
           key: formKey,
           child: Column(
             children: [
@@ -161,7 +162,7 @@ class _AddPageState extends State<AddEditPage> {
                   child: widget.editedIndex == null ? const Text("Add") : const Text('Save'),
                   onPressed: () {
                     var validate = formKey.currentState!.validate();
-                    showSnackBarOnScreen();
+
                     if (validate) {
                       int balance = personController.balanceText.value;
                       int advanceAmount = int.parse(
@@ -181,6 +182,8 @@ class _AddPageState extends State<AddEditPage> {
                       personController.getBalanceAmount();
                       clearControllers();
                       Navigator.pop(context);
+                    } else {
+                      showSnackBarOnScreen();
                     }
                   },
                 ),

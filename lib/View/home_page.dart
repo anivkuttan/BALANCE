@@ -32,88 +32,92 @@ class _HomePageState extends State<HomePage> {
           BuildContainer(personController: personController),
           const SizedBox(height: 20),
           Expanded(
-            child: GetBuilder<PersonController>(builder: ((controller) {
-              return ListView.separated(
-                itemCount: controller.personBox.length,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 4.0,
-                ),
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  Person? person = controller.personBox.getAt(index);
-                  return Card(
-                    child: ExpansionTile(
-                      textColor: Colors.black,
-                      tilePadding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                      title: Row(
-                        children: [
-                          Text(person!.name),
-                          const Spacer(),
-                          Container(
-                            height: 50,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              color: person.balance.isNegative ? Colors.red : const Color.fromARGB(255, 101, 141, 232),
-                              borderRadius: BorderRadius.circular(13),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(person.balance.toString(), style: const TextStyle(fontSize: 30)),
-                          ),
-                        ],
-                      ),
-                      subtitle: Text(
-                        "Advance Amount : ${person.initialAmount}",
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      children: [
-                        Container(
-                          color: const Color.fromARGB(255, 139, 198, 240),
-                          alignment: Alignment.center,
-                          height: 200,
-                          child: Column(
+            child: GetBuilder<PersonController>(
+              builder: ((controller) {
+                return ListView.separated(
+                  itemCount: controller.personBox.length,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4.0,
+                  ),
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    Person? person = controller.personBox.getAt(index);
+                   
+                    return  Card(
+                        child: ExpansionTile(
+                          textColor: Colors.black,
+                          tilePadding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                          title: Row(
                             children: [
-                              Text(person.discreption),
+                              Text(person!.name),
                               const Spacer(),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TextButton.icon(
-                                    icon: const Icon(Icons.delete, color: Colors.red),
-                                    label: const Text(
-                                      'Delete',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    onPressed: () {
-                                      controller.deletePersonBox(index: index);
-                                    },
-                                  ),
-                                  TextButton.icon(
-                                    onPressed: () {
-                                      Route route = MaterialPageRoute(builder: (context) {
-                                        return AddEditPage(
-                                          editedIndex: index,
-                                          editedPerson: person,
-                                        );
-                                      });
-                                      Navigator.of(context).push(route);
-                                    },
-                                    icon: const Icon(Icons.edit),
-                                    label: const Text('Edit'),
-                                  ),
-                                ],
-                              )
+                              Container(
+                                height: 50,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                  color:
+                                      person.balance.isNegative ? Colors.red : const Color.fromARGB(255, 101, 141, 232),
+                                  borderRadius: BorderRadius.circular(13),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(person.balance.toString(), style: const TextStyle(fontSize: 30)),
+                              ),
                             ],
                           ),
-                        )
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const Divider();
-                },
-              );
-            })),
+                          subtitle: Text(
+                            "Advance Amount : ${person.initialAmount}",
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          children: [
+                            Container(
+                              color: const Color.fromARGB(255, 139, 198, 240),
+                              alignment: Alignment.center,
+                              height: 200,
+                              child: Column(
+                                children: [
+                                  Text(person.discreption),
+                                  const Spacer(),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextButton.icon(
+                                        icon: const Icon(Icons.delete, color: Colors.red),
+                                        label: const Text(
+                                          'Delete',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                        onPressed: () {
+                                          controller.deletePersonBox(index: index);
+                                        },
+                                      ),
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          Route route = MaterialPageRoute(builder: (context) {
+                                            return AddEditPage(
+                                              editedIndex: index,
+                                              editedPerson: person,
+                                            );
+                                          });
+                                          Navigator.of(context).push(route);
+                                        },
+                                        icon: const Icon(Icons.edit),
+                                        label: const Text('Edit'),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
+                );
+              }),
+            ),
           )
         ],
       ),
@@ -276,48 +280,3 @@ class BuildBalanceTExtWidegt extends StatelessWidget {
     );
   }
 }
-
-/*
-Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text(
-                  'Total Balance Amount ',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Obx(() {
-                  return Text(
-                    personController.totalBalanceAmount.toString(),
-                    style: const TextStyle(fontSize: 30),
-                  );
-                })
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text("Total Initial Amount "),
-                Obx(() {
-                  return Text(
-                    personController.totalAdvanceAmount.toString(),
-                    style: const TextStyle(fontSize: 30),
-                  );
-                }),
-                FloatingActionButton(
-                  child: const Icon(Icons.add, color: Colors.black),
-                  onPressed: () {
-                    Route route = MaterialPageRoute(builder: (context) {
-                      return const AddEditPage();
-                    });
-                    Navigator.of(context).push(route);
-                  },
-                )
-              ],
-            )
-          ],
-        )
-
-*/
