@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                             height: 50,
                             width: 80,
                             decoration: BoxDecoration(
-                              color: person.balance.isNegative ? Colors.red : Colors.green,
+                              color: person.balance.isNegative ? Colors.red : const Color.fromARGB(255, 101, 141, 232),
                               borderRadius: BorderRadius.circular(13),
                             ),
                             alignment: Alignment.center,
@@ -67,9 +67,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                       children: [
                         Container(
-                          color: const Color.fromARGB(255, 200, 205, 200),
+                          color: const Color.fromARGB(255, 139, 198, 240),
                           alignment: Alignment.center,
-                          height: 260,
+                          height: 200,
                           child: Column(
                             children: [
                               Text(person.discreption),
@@ -164,19 +164,6 @@ class BuildContainer extends StatelessWidget {
                   const SizedBox(height: 30),
                   BuildAdvanceAmountWidget(personController: personController),
                   const SizedBox(height: 40),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(23),
-                    child: SizedBox(
-                      height: 6,
-                      child: LinearProgressIndicator(
-                        value:personController.totalBalanceAmount.value/0.1,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          Color.fromARGB(255, 26, 91, 241),
-                        ),
-                        backgroundColor: const Color.fromARGB(255, 247, 218, 174),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

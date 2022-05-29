@@ -29,7 +29,7 @@ class _AddPageState extends State<AddEditPage> {
       clearControllers();
     } else {
       personController.nameController.text = widget.editedPerson!.name;
-      // personController.balanceController.text 
+      personController.balanceController.text = '0';
       personController.balanceText.value = widget.editedPerson!.balance;
       personController.initialAmountController.text = widget.editedPerson!.initialAmount.toString();
       personController.discreptionController.text = widget.editedPerson!.discreption;
@@ -47,7 +47,6 @@ class _AddPageState extends State<AddEditPage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           key: formKey,
           child: Column(
             children: [
@@ -162,8 +161,9 @@ class _AddPageState extends State<AddEditPage> {
                   child: widget.editedIndex == null ? const Text("Add") : const Text('Save'),
                   onPressed: () {
                     var validate = formKey.currentState!.validate();
+                    showSnackBarOnScreen();
                     if (validate) {
-                      int balance = int.parse(personController.balanceController.text);
+                      int balance = personController.balanceText.value;
                       int advanceAmount = int.parse(
                         personController.initialAmountController.text,
                       );
@@ -190,6 +190,13 @@ class _AddPageState extends State<AddEditPage> {
         ),
       ),
     );
+  }
+
+  showSnackBarOnScreen() {
+    SnackBar snacBar = const SnackBar(
+      content: Text('Please Fill Form'),
+    );
+    return ScaffoldMessenger.of(context).showSnackBar(snacBar);
   }
 
   void clearControllers() {
