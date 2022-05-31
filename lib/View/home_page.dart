@@ -34,7 +34,14 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: GetBuilder<PersonController>(
               builder: ((controller) {
-                return ListView.separated(
+                bool emptyList = controller.personBox.isEmpty;
+
+                if (emptyList) {
+                  return const Center(
+                    child: Text('Empty Persons'),
+                  );
+                }else{
+                  return  ListView.separated(
                   itemCount: controller.personBox.length,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 4.0,
@@ -42,80 +49,80 @@ class _HomePageState extends State<HomePage> {
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     Person? person = controller.personBox.getAt(index);
-                   
-                    return  Card(
-                        child: ExpansionTile(
-                          textColor: Colors.black,
-                          tilePadding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                          title: Row(
-                            children: [
-                              Text(person!.name),
-                              const Spacer(),
-                              Container(
-                                height: 50,
-                                width: 80,
-                                decoration: BoxDecoration(
-                                  color:
-                                      person.balance.isNegative ? Colors.red : const Color.fromARGB(255, 101, 141, 232),
-                                  borderRadius: BorderRadius.circular(13),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(person.balance.toString(), style: const TextStyle(fontSize: 30)),
-                              ),
-                            ],
-                          ),
-                          subtitle: Text(
-                            "Advance Amount : ${person.initialAmount}",
-                            style: const TextStyle(fontSize: 12),
-                          ),
+                    return Card(
+                      child: ExpansionTile(
+                        textColor: Colors.black,
+                        tilePadding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                        title: Row(
                           children: [
+                            Text(person!.name),
+                            const Spacer(),
                             Container(
-                              color: const Color.fromARGB(255, 139, 198, 240),
-                              alignment: Alignment.center,
-                              height: 200,
-                              child: Column(
-                                children: [
-                                  Text(person.discreption),
-                                  const Spacer(),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      TextButton.icon(
-                                        icon: const Icon(Icons.delete, color: Colors.red),
-                                        label: const Text(
-                                          'Delete',
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                        onPressed: () {
-                                          controller.deletePersonBox(index: index);
-                                        },
-                                      ),
-                                      TextButton.icon(
-                                        onPressed: () {
-                                          Route route = MaterialPageRoute(builder: (context) {
-                                            return AddEditPage(
-                                              editedIndex: index,
-                                              editedPerson: person,
-                                            );
-                                          });
-                                          Navigator.of(context).push(route);
-                                        },
-                                        icon: const Icon(Icons.edit),
-                                        label: const Text('Edit'),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                              height: 50,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                color:
+                                    person.balance.isNegative ? Colors.red : const Color.fromARGB(255, 101, 141, 232),
+                                borderRadius: BorderRadius.circular(13),
                               ),
-                            )
+                              alignment: Alignment.center,
+                              child: Text(person.balance.toString(), style: const TextStyle(fontSize: 30)),
+                            ),
                           ],
                         ),
-                      );
+                        subtitle: Text(
+                          "Advance Amount : ${person.initialAmount}",
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        children: [
+                          Container(
+                            color: const Color.fromARGB(255, 139, 198, 240),
+                            alignment: Alignment.center,
+                            height: 200,
+                            child: Column(
+                              children: [
+                                Text(person.discreption),
+                                const Spacer(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextButton.icon(
+                                      icon: const Icon(Icons.delete, color: Colors.red),
+                                      label: const Text(
+                                        'Delete',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      onPressed: () {
+                                        controller.deletePersonBox(index: index);
+                                      },
+                                    ),
+                                    TextButton.icon(
+                                      onPressed: () {
+                                        Route route = MaterialPageRoute(builder: (context) {
+                                          return AddEditPage(
+                                            editedIndex: index,
+                                            editedPerson: person,
+                                          );
+                                        });
+                                        Navigator.of(context).push(route);
+                                      },
+                                      icon: const Icon(Icons.edit),
+                                      label: const Text('Edit'),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
                   },
                   separatorBuilder: (context, index) {
                     return const Divider();
                   },
                 );
+                }
               }),
             ),
           )

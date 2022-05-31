@@ -38,6 +38,31 @@ class _AddPageState extends State<AddEditPage> {
     super.initState();
   }
 
+  Future<bool?> askUserToExit(BuildContext context) async {
+    return showDialog<bool?>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Are you Want to Close this Page'),
+            content: const Text('This Action will clear all data'),
+            actions: [
+              ElevatedButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+              TextButton(
+                child: const Text('Yes'),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +72,14 @@ class _AddPageState extends State<AddEditPage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: Form(
-         // do implement on will pop
+          // do implement on will
+          onWillPop: () async {
+            final userAnswerToExit = await askUserToExit(context);
+            // checking useer clik to exit then it will false to keep same page
+            return userAnswerToExit ?? false;
+          },
           key: formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
               TextFormField(
@@ -89,16 +120,18 @@ class _AddPageState extends State<AddEditPage> {
                           child: TextFormField(
                             controller: personController.balanceController,
                             keyboardType: TextInputType.number,
+                            decoration: decoration.copyWith(
+                              label: const Text('Amount'),
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please Enter Amount';
+                              } else if (!value.isNum) {
+                                return 'Number Only';
                               } else {
                                 return null;
                               }
                             },
-                            decoration: decoration.copyWith(
-                              label: const Text('Amount'),
-                            ),
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -136,6 +169,8 @@ class _AddPageState extends State<AddEditPage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please Enter Advance Amount';
+                  } else if (!value.isNum) {
+                    return 'Plese Enter Number  only';
                   } else {
                     return null;
                   }
@@ -182,9 +217,7 @@ class _AddPageState extends State<AddEditPage> {
                       personController.getBalanceAmount();
                       clearControllers();
                       Navigator.pop(context);
-                    } else {
-                      showSnackBarOnScreen();
-                    }
+                    } else {}
                   },
                 ),
               )

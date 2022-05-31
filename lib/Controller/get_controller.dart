@@ -1,5 +1,3 @@
-
-
 import 'package:balance/Controller/data_base_helper.dart';
 import 'package:balance/Model/person_model.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +16,7 @@ class PersonController extends GetxController {
   RxInt totalAdvanceAmount = 0.obs;
   RxInt balanceText = 0.obs;
 
+ 
 
   getBalanceAmount() {
     List<Person> totalPersons = personBox.values.toList();
@@ -59,11 +58,19 @@ class PersonController extends GetxController {
   }
 
   countterButtonClicked(Counter buttonEvent) {
-    int i = int.parse(balanceController.text);
-    if (buttonEvent == Counter.increment) {
-      balanceText.value += i;
-    } else if (buttonEvent == Counter.decrement) {
-      balanceText.value -= i;
+    // print(balanceController.text);
+    // print("We Are Hear this is num ${balanceController.text.isNum}");
+    // checking amountFormField Value is Num
+    bool isValidNum = balanceController.text.isNum;
+    if (isValidNum) {
+      int i = int.parse(balanceController.text);
+      if (buttonEvent == Counter.increment) {
+        balanceText.value += i;
+      } else if (buttonEvent == Counter.decrement) {
+        balanceText.value -= i;
+      }
+    } else {
+      return null;
     }
   }
 
